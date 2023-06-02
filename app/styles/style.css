@@ -67,6 +67,10 @@ header {
 	gap: 1rem;
 }
 
+form input {
+	padding: 4px 6px;
+}
+
 .search :is(input, button) {
 	font-size: 16px;
 }
