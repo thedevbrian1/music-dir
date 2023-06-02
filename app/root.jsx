@@ -64,6 +64,7 @@ export default function App() {
 
         <main>
           <Search />
+          {/* TODO: Search as you type with JS on */}
           <GenrePicker genres={genres} />
           <Outlet />
         </main>

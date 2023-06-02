@@ -5,11 +5,12 @@ import { json } from "@remix-run/node";
 
 export async function loader({ request, params }) {
     const genre = params.genre;
+
     const url = new URL(request.url);
-    const query = url.searchParams.get('q') ?? '';
+    const query = url.searchParams.get('q')?.trim().split(' ').join('') ?? '';
 
     const artists = await getArtistsByGenre(genre, query);
-    // console.log({ artists });
+
     return json({ artists });
 }
 
