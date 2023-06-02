@@ -1,7 +1,12 @@
 import { prisma } from "~/db.server";
 
-export async function getArtists() {
+export async function getArtists(query) {
     return prisma.artist.findMany({
+        where: {
+            name: {
+                contains: query
+            }
+        },
         include: {
             genres: true,
             images: true
@@ -9,14 +14,39 @@ export async function getArtists() {
     });
 }
 
-export async function getArtistsByGenre(genre) {
+export async function getArtistsByGenre(genre, query) {
     return prisma.artist.findMany({
+        // where: {
+        //     genres: {
+        //         some: {
+        //             name: genre
+        //         }
+        //     }
+        // },
         where: {
-            genres: {
-                some: {
-                    name: genre
+            AND: [
+                {
+                    genres: {
+                        some: {
+                            name: genre
+                        }
+                    }
+                },
+                {
+                    OR: [
+                        {
+                            genres: {
+                                some: {
+                                    name: { contains: query }
+                                }
+                            }
+                        },
+                        {
+                            name: { contains: query }
+                        }
+                    ]
                 }
-            }
+            ]
         },
         include: {
             images: true

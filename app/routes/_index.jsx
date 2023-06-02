@@ -5,13 +5,21 @@ import artists from "~/data/artists.json";
 import Search from "../components/Search";
 import GenrePicker from "../components/GenrePicker";
 import ArtistList from "../components/ArtistList";
-import { getArtists } from "../models/artist.server";
+import { getArtists, getArtistsByGenre, searchArtists } from "../models/artist.server";
 import { json } from "@remix-run/node";
 
 export const meta = () => [{ title: "Dope music" }];
 
-export async function loader() {
-  const artists = await getArtists();
+export async function loader({ request }) {
+
+  const url = new URL(request.url);
+  const query = url.searchParams.get('q') ?? '';
+  const artists = await getArtists(query);
+
+  // const searchResults = await searchArtists(query);
+
+  // console.log({ searchResults });
+
   return json({ artists });
 }
 
