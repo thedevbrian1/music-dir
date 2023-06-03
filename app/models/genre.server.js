@@ -4,9 +4,13 @@ export async function getGenres() {
     return prisma.genre.findMany({
         select: {
             id: true,
-            name: true
+            name: true,
+            artist: {
+                select: {
+                    id: true
+                }
+            }
         },
-        distinct: ['name'],
-        // take: 1
+        // distinct: ['name'],
     });
 }

@@ -28,14 +28,25 @@ export const links = () => [
 export async function loader({ request }) {
   const user = await getUser(request);
   const genres = await getGenres();
-  return json({ user, genres });
+
+  const sortedGenres = genres.map(genre => genre.name).sort();
+  const uniqueGenres = sortedGenres.filter((genre, index) => genre !== sortedGenres[index + 1]);
+  const genreCounts = uniqueGenres.map(genre => {
+    const filteredGenres = genres.filter((filteredGenre) => filteredGenre.name === genre);
+    return {
+      genre,
+      count: filteredGenres.length
+    }
+  });
+
+  return json({ user, genreCounts });
 };
 
 export default function App() {
   const genre = undefined;
 
   const title = genre ? `Genre: ${genre}` : 'Music Picker';
-  const { genres } = useLoaderData();
+  const { genreCounts } = useLoaderData();
   // console.log({ genres });
 
   return (
@@ -65,7 +76,7 @@ export default function App() {
         <main>
           <Search />
           {/* TODO: Search as you type with JS on */}
-          <GenrePicker genres={genres} />
+          <GenrePicker genres={genreCounts} />
           <Outlet />
         </main>
         <ScrollRestoration />

@@ -39,19 +39,19 @@ export default function GenrePicker({ genres }) {
                 return (
                     <Link
                         key={genre.id}
-                        to={`/genre/${genre.name}${location.search}`}
+                        to={`/genre/${genre.genre}${location.search}`}
                         className={
-                            genre.name === selectedGenre
+                            genre.genre === selectedGenre
                                 ? 'genre-filter selected'
                                 : 'genre-filter'
                         }
                         prefetch="intent"
                         preventScrollReset
                     >
-                        <span className="genre-label" title={genre.name}>
-                            {genre.name}
+                        <span className="genre-label" title={genre.genre}>
+                            {genre.genre}
                         </span>{' '}
-                        (1)
+                        ({genre.count})
                     </Link>
                 );
             })}

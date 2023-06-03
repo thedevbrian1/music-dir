@@ -53,3 +53,15 @@ export async function getArtistsByGenre(genre, query) {
         }
     });
 }
+
+export async function getArtistsCount(genre) {
+    return prisma.artist.count({
+        where: {
+            genres: {
+                some: {
+                    name: genre
+                }
+            }
+        }
+    });
+}
